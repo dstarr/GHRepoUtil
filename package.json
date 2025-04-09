@@ -2,8 +2,9 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc && node dist/index.js",
-    "list": "tsc && node dist/index.js -l"
+    "dev": "tsc && node dist/app.js",
+    "list": "tsc && node dist/app.js --list",
+    "del": "tsc && node dist/app.js --delete"
   },
   "devDependencies": {
     "@types/axios": "^0.9.36",

@@ -1,6 +1,6 @@
-import axios from 'axios';
 import dotenv from 'dotenv';
-import { operations } from './operations'; // Import the extracted function
+import { listRepositories } from './operations/listRepositories.js';
+import { deleteRepository } from './operations/deleteRepository.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -14,9 +14,21 @@ if (!GITHUB_TOKEN_1) {
 
 const args = process.argv.slice(2);
 
+if (args.includes('--delete')) {
+    const repoName = args[args.indexOf('--delete') + 1];
+    console.log(`Repository to delete: ${repoName}`);
+}
+
 async function main() {
     if (args.includes('--list') || args.includes('-l')) {
-        await operations.listRepositories(GITHUB_TOKEN_1 as string);
+        await listRepositories(GITHUB_TOKEN_1 as string);
+    } else if (args.includes('--delete') || args.includes('-d')) {
+        const repoName = args[args.indexOf('--delete') + 1] || args[args.indexOf('-d') + 1];
+        if (!repoName) {
+            console.error('Error: Repository name is required for deletion.');
+            process.exit(1);
+        }
+        await deleteRepository("dstarr", repoName as string, GITHUB_TOKEN_1 as string);
     }
 }
 
